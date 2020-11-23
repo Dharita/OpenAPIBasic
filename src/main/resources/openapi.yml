@@ -1,0 +1,166 @@
+openapi: 3.0.2
+info:
+  title: 'OpenAPI Demo'
+  description: 'Tutorials on Spring Boot and OpenAPI.'
+  version: 1.0.0
+  contact:
+    email: chokshidharita@gmail.com
+servers:
+  - url: http://localhost:8081/
+tags:
+  - name: user
+    description: Operations about user
+paths:
+  /users/{user_id}:
+    get:
+      tags:
+        - user
+      summary: Get user by user id
+      operationId: getUserById
+      parameters:
+        - name: user_id
+          in: path
+          description: 'The id that needs to be fetched.'
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: user_name
+          in: query
+          description: 'User name'
+          required: false
+          schema:
+            type: string
+        - name: first_name
+          in: query
+          description: 'First name'
+          required: false
+          schema:
+             type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+          content: { }
+    put:
+      tags:
+        - user
+      summary: Updated user
+      description: 'User details to update'
+      operationId: updateUser
+      parameters:
+        - name: user_id
+          in: path
+          description: id that need to be updated
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Updated user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Invalid user supplied
+          content: { }
+        404:
+          description: User not found
+          content: { }
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: 'User to delete'
+      operationId: deleteUser
+      parameters:
+        - name: user_id
+          in: path
+          description: The id that needs to be deleted
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: operation successful
+          content: { }
+        404:
+          description: User not found
+          content: { }
+  /users:
+    get:
+      tags:
+        - user
+      summary: Get users
+      operationId: getUsers
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+          content: { }
+    post:
+      tags:
+        - user
+      summary: Add user
+      description: 'User details to add'
+      operationId: addUser
+      requestBody:
+        description: New user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Invalid user supplied
+          content: { }
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        userStatus:
+          type: string
+          description: User Status
